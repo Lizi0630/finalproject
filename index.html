@@ -2,221 +2,380 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Treatments | Psychiatric Clinic</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TIBA Center | Treatment, Intervention & Behavioral Assistance</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/scrollama"></script>
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html {
-      scroll-snap-type: y mandatory;
-      scroll-behavior: smooth;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
+
     body {
-      height: 100vh;
-      overflow-y: scroll;
-      font-family: Arial, sans-serif;
+      font-family: 'Poppins', Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
     }
-    section {
+
+    header {
       height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       padding: 40px;
-      color: white;
-      scroll-snap-align: start;
-    }
-    .intro {
-      background: linear-gradient(to bottom right, #4b0082, #6a0dad);
       text-align: center;
+      background: #f2f5f7 url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat;
+      background-size: cover;
+      border-bottom: 1px solid #e0e0e0;
     }
-    .section-title {
-      font-size: 2.5em;
-      margin-bottom: 20px;
+
+    header h1 {
+      font-size: 3em;
+      color: #2a3e4c;
+      margin-bottom: 10px;
+      font-weight: 600;
     }
-    .section-content {
+
+    .subtitle {
+      font-size: 1.4em;
+      font-weight: 500;
+      color: #4CB5AE;
+      margin-bottom: 25px;
+    }
+
+    .mission {
+      font-size: 1.1em;
+      color: #555;
       max-width: 700px;
-      line-height: 1.6;
-      font-size: 1.2em;
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    .scroll-container {
+      display: flex;
+      flex-direction: row;
+    }
+
+    #scrolly {
+      position: relative;
+    }
+
+    .content-column {
+      position: relative;
+      width: 50%;
+      padding: 60px 40px;
+      min-height: 100vh;
+    }
+
+    .sticky-column {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 50%;
+      background-color: #ffffff;
+      border-left: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       text-align: center;
+      box-shadow: -5px 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .sticky-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 40px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      border-radius: 12px;
+      background-color: #fff;
+      will-change: opacity, transform;
+    }
+
+    .sticky-inner.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .step-text {
+      padding: 30vh 0;
+      min-height: 100vh;
+      font-size: 1.3em;
+      line-height: 1.6;
+      opacity: 0;
+      font-weight: 400;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      will-change: opacity, transform;
+    }
+
+    .step-text.is-active {
+      opacity: 1;
+    }
+
+    .highlighted-title {
+      color: #2a3e4c;
+      font-weight: 600;
+      font-size: 1.5em;
+      display: block;
+      margin-bottom: 0.4em;
+    }
+
+    .highlighted {
+      color: #4CB5AE;
+      font-weight: 600;
+    }
+
+    #treatment-name {
+      font-size: 1.5em;
+      color: #2a3e4c;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .waffle-chart {
+      display: grid;
+      grid-template-columns: repeat(10, 28px);
+      grid-gap: 6px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .waffle-chart div {
+      width: 28px;
+      height: 28px;
+      background-color: rgba(76, 181, 174, 0.15);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .waffle-chart div.filled {
+      background-color: #4CB5AE;
+    }
+
+    .waffle-chart div.filled:hover {
+      transform: scale(1.1);
+      background-color: #3aa59e;
+    }
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background-color: #ddd;
+      margin: 20px 0;
+    }
+
+    #treatment-desc {
+      margin-top: 12px;
+      font-size: 1.5em;
+      color: #555;
+      max-width: 360px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    .conclusion {
+      background: linear-gradient(to right, #f8f9fa, #e9f9f8);
+      padding: 100px 20px;
+      text-align: center;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .conclusion h2 {
+      font-size: 2.2em;
+      color: #2a3e4c;
+      font-weight: 600;
       margin-bottom: 20px;
     }
-    canvas {
-      max-width: 600px;
-      margin-top: 20px;
+
+    .conclusion p {
+      font-size: 1.25em;
+      color: #444;
+      max-width: 680px;
+      margin: 0 auto 40px;
+      line-height: 1.8;
+      font-weight: 400;
     }
-    .tms { background: linear-gradient(to bottom right, #6b46c1, #553c9a); }
-    .ketamine { background: linear-gradient(to bottom right, #7c3aed, #4c1d95); }
-    .medication { background: linear-gradient(to bottom right, #805ad5, #6b21a8); }
-    .structured { background: linear-gradient(to bottom right, #9f7aea, #5b21b6); }
-    .adhd { background: linear-gradient(to bottom right, #a78bfa, #6d28d9); }
+
+    .conclusion strong {
+      color: #4CB5AE;
+    }
+
+    .button-link {
+      display: inline-block;
+      padding: 14px 32px;
+      font-size: 1.05em;
+      color: white;
+      background-color: #4CB5AE;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(76, 181, 174, 0.3);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .button-link:hover {
+      background-color: #3aa59e;
+      box-shadow: 0 6px 18px rgba(76, 181, 174, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .scroll-container {
+        flex-direction: column;
+      }
+
+      .content-column, .sticky-column {
+        width: 100%;
+        height: auto;
+      }
+
+      .sticky-column {
+        position: relative;
+        border-left: none;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      .sticky-inner {
+        padding: 20px 10px;
+      }
+
+      .waffle-chart {
+        grid-template-columns: repeat(10, 16px);
+        grid-gap: 3px;
+      }
+
+      .waffle-chart div {
+        width: 16px;
+        height: 16px;
+      }
+    }
   </style>
 </head>
+
 <body>
 
-  <section class="intro">
-    <div>
-      <h1 class="section-title">Our Psychiatric Treatments</h1>
-      <p class="section-content">
-        We offer a comprehensive range of innovative and evidence-based psychiatric treatments, tailored to meet the unique needs of each individual. Explore our therapies below, each supported by research and statistics, to understand how we can help you or your loved one.
-      </p>
-    </div>
-  </section>
+  <header>
+    <h1>TIBA Center</h1>
+    <div class="subtitle">Treatment, Intervention & Behavioral Assistance</div>
+    <p class="mission">
+      Our mission is to deliver compassionate, evidence-based psychiatric care through early intervention, tailored treatments, and behavioral support—empowering individuals to regain clarity, strength, and emotional well-being.
+    </p>
+  </header>
 
-  <section class="tms">
-    <div>
-      <h1 class="section-title">TMS Therapy</h1>
-      <p class="section-content">
-        Transcranial Magnetic Stimulation (TMS) is a non-invasive treatment for depression, anxiety, OCD, and other mental health conditions. It uses magnetic fields to stimulate specific areas of the brain and has shown efficacy in patients who haven't responded to medications.
-      </p>
-      <p class="section-content">
-        <strong>Key Statistic:</strong> A Stanford study found that nearly <strong>80%</strong> of patients with severe depression achieved rapid remission through TMS, significantly higher than traditional treatments.
-      </p>
-      <canvas id="tmsChart"></canvas>
+  <div class="scroll-container">
+    <div id="scrolly" class="content-column">
+      <div class="step-text" data-percent="80" data-name="Remission Rate with Severe Depression" data-desc="A Stanford study found nearly 80% of patients with severe depression achieved remission using TMS.">
+        TMS Therapy: Non-invasive brain stimulation therapy effective in treating depression by activating neural pathways.
+      </div>
+      <div class="step-text" data-percent="52" data-name="Response to Ketamine After 3 Infusions" data-desc="Clinical studies show a 52% remission rate after three ketamine infusions.">
+        Ketamine Therapy: Rapid-acting treatment for depression and PTSD, especially when traditional medications fail.
+      </div>
+      <div class="step-text" data-percent="16.5" data-name="U.S. Adults Using Mental Health Medication" data-desc="CDC reports that 16.5% of U.S. adults used mental health medication in 2020.">
+        Medication Management: Personalized, continuously monitored pharmacological care to optimize mental health outcomes.
+      </div>
+      <div class="step-text" data-percent="42" data-name="CBT Effectiveness for Depression & Anxiety" data-desc="CBT has a 42% response and 36% remission rate for depression and anxiety.">
+        Cognitive Behavioral Therapy(CBT): Structured, goal-oriented talk therapy to address depression, anxiety, and mood disorders.
+      </div>
+      <div class="step-text" data-percent="11.4" data-name="ADHD Diagnosis Rate in U.S. Children" data-desc="In 2022, 11.4% of U.S. children aged 3–17 were diagnosed with ADHD.">
+        ADHD Evaluation: Comprehensive diagnostic assessments and personalized care plans for attention-related challenges.
+      </div>
     </div>
-  </section>
 
-  <section class="ketamine">
-    <div>
-      <h1 class="section-title">Ketamine Therapy</h1>
-      <p class="section-content">
-        Ketamine therapy is an innovative treatment for severe depression, PTSD, and chronic anxiety. Administered in controlled doses under medical supervision, it can provide rapid relief from symptoms when other treatments have failed.
-      </p>
-      <p class="section-content">
-        <strong>Key Statistic:</strong> In a clinical study, <strong>52%</strong> of participants achieved remission from severe depression after three ketamine infusions over 11 days.
-      </p>
-      <canvas id="ketamineChart"></canvas>
+    <div class="sticky-column">
+      <div class="sticky-inner">
+        <h3 id="treatment-name">TMS Therapy</h3>
+        <div id="waffle" class="waffle-chart"></div>
+        <div class="divider"></div>
+        <p id="treatment-desc">
+          Non-invasive brain stimulation therapy effective in treating depression by activating neural pathways.
+        </p>
+      </div>
     </div>
-  </section>
-
-  <section class="medication">
-    <div>
-      <h1 class="section-title">Medication Management</h1>
-      <p class="section-content">
-        Our psychiatrists conduct thorough assessments and ongoing evaluations to determine the most effective medications and dosages for each individual. We monitor side effects, effectiveness, and work collaboratively with patients to adjust treatment plans as needed.
-      </p>
-      <p class="section-content">
-        <strong>Key Statistic:</strong> According to the CDC, <strong>16.5%</strong> of U.S. adults used prescription medication for mental health in 2020.
-      </p>
-      <canvas id="medicationChart"></canvas>
-    </div>
-  </section>
-
-  <section class="structured">
-    <div>
-      <h1 class="section-title">Structured Therapy</h1>
-      <p class="section-content">
-        Structured therapy involves evidence-based talk therapies such as Cognitive Behavioral Therapy (CBT), Dialectical Behavior Therapy (DBT), and trauma-informed approaches, customized to each patient’s needs.
-      </p>
-      <p class="section-content">
-        <strong>Key Statistic:</strong> CBT has demonstrated a <strong>42%</strong> response rate and a <strong>36%</strong> remission rate among patients with various mental health conditions.
-      </p>
-      <canvas id="structuredChart"></canvas>
-    </div>
-  </section>
-
-  <section class="adhd">
-    <div>
-      <h1 class="section-title">ADHD Testing and Management</h1>
-      <p class="section-content">
-        We provide comprehensive testing for ADHD using clinical interviews, rating scales, and cognitive assessments. Treatment plans may include behavioral therapy, psychoeducation, and medication support.
-      </p>
-      <p class="section-content">
-        <strong>Key Statistic:</strong> Around <strong>11.4%</strong> of U.S. children have been diagnosed with ADHD at some point, with <strong>10.5%</strong> currently having ADHD.
-      </p>
-      <canvas id="adhdChart"></canvas>
-    </div>
-  </section>
+  </div>
 
   <script>
-    const sharedOptions = {
-      plugins: {
-        legend: {
-          labels: {
-            color: '#ffffff'
-          }
-        }
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: '#ffffff'
-          }
-        },
-        y: {
-          ticks: {
-            color: '#ffffff'
-          },
-          beginAtZero: true,
-          max: 100
-        }
+    document.querySelectorAll('.step-text').forEach(el => {
+      const text = el.textContent.trim();
+      const colonIndex = text.indexOf(':');
+      if (colonIndex !== -1) {
+        const title = text.slice(0, colonIndex).trim();
+        const rest = text.slice(colonIndex + 1).trim();
+        el.innerHTML = `<span class="highlighted-title">${title}:</span> ${rest}`;
       }
-    };
-
-    new Chart(document.getElementById('tmsChart'), {
-      type: 'bar',
-      data: {
-        labels: ['TMS Therapy', 'Traditional Treatment'],
-        datasets: [{
-          label: 'Remission Rate (%)',
-          data: [80, 50],
-          backgroundColor: ['#d6bcfa', '#b794f4']
-        }]
-      },
-      options: sharedOptions
     });
 
-    new Chart(document.getElementById('ketamineChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Ketamine Therapy'],
-        datasets: [{
-          label: 'Remission Rate (%)',
-          data: [52],
-          backgroundColor: ['#c084fc']
-        }]
-      },
-      options: sharedOptions
-    });
+    function drawWaffle(percent) {
+      const waffle = document.getElementById('waffle');
+      waffle.innerHTML = '';
+      const total = 100;
+      const filled = Math.round((percent / 100) * total);
+      for (let i = 0; i < total; i++) {
+        const cell = document.createElement('div');
+        if (i < filled) {
+          cell.classList.add('filled');
+        }
+        waffle.appendChild(cell);
+      }
+    }
 
-    new Chart(document.getElementById('medicationChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Adults using Rx'],
-        datasets: [{
-          label: 'US Adults (%)',
-          data: [16.5],
-          backgroundColor: ['#a78bfa']
-        }]
-      },
-      options: sharedOptions
-    });
+    const scroller = scrollama();
+    const stickyInner = document.querySelector('.sticky-inner');
 
-    new Chart(document.getElementById('structuredChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Response Rate', 'Remission Rate'],
-        datasets: [{
-          label: 'CBT Outcomes (%)',
-          data: [42, 36],
-          backgroundColor: ['#ddd6fe', '#c4b5fd']
-        }]
-      },
-      options: sharedOptions
-    });
+    scroller
+      .setup({ step: '#scrolly .step-text', offset: 0.5, debug: false })
+      .onStepEnter(response => {
+        document.querySelectorAll('.step-text').forEach(el => el.classList.remove('is-active'));
+        response.element.classList.add('is-active');
 
-    new Chart(document.getElementById('adhdChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Ever Diagnosed', 'Current ADHD'],
-        datasets: [{
-          label: 'US Children (%)',
-          data: [11.4, 10.5],
-          backgroundColor: ['#a5b4fc', '#818cf8']
-        }]
-      },
-      options: sharedOptions
-    });
+        const percent = response.element.getAttribute('data-percent');
+        const name = response.element.getAttribute('data-name');
+        const desc = response.element.getAttribute('data-desc');
+
+        stickyInner.classList.remove('show');
+        void stickyInner.offsetWidth;
+        stickyInner.classList.add('show');
+
+        document.getElementById('treatment-name').textContent = name;
+
+        const highlightedDesc = desc.replace(/(\d+\.?\d*%)/g, "<span class='highlighted'>$1</span>");
+        document.getElementById('treatment-desc').innerHTML = highlightedDesc;
+
+        drawWaffle(percent);
+      });
+
+    drawWaffle(80);
+
+    // Show first step manually on page load
+      window.addEventListener('load', () => {
+        const firstStep = document.querySelector('#scrolly .step-text');
+        if (firstStep) {
+          firstStep.classList.add('is-active');
+          document.getElementById('treatment-name').textContent = firstStep.dataset.name;
+          document.getElementById('treatment-desc').innerHTML = firstStep.dataset.desc.replace(/(\d+\.?\d*%)/g, "<span class='highlighted'>$1</span>");
+          drawWaffle(firstStep.dataset.percent);
+          stickyInner.classList.add('show');
+        }
+      });
+
   </script>
+
+<section class="conclusion">
+  <h2>Start Your Journey to Mental Wellness</h2>
+  <p>
+    At <strong>TIBA Center</strong>, we’re here to help you regain clarity, resilience, and emotional balance. Whether you’re exploring advanced treatments like <strong>TMS</strong> and <strong>Ketamine</strong>, or seeking personalized therapeutic support—we’ll meet you where you are.
+  </p>
+  <p><strong>You’re not alone—take the first step today.</strong></p>
+
+  <a href="index.html" class="button-link">← Back to Home</a>
+</section>
+
+
 </body>
 </html>
